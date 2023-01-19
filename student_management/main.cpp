@@ -1,24 +1,36 @@
 #include<iostream>
 using namespace std;
-struct Node {
-    int data;
-    Node *next;
-};
-typedef struct Node *node;
 
-// cap phat don mot node moi voi du lieu la so nguyen
-node makeNode(int x) {
-    node tmp = new Node();
-    tmp->data = x;
+struct Student {
+    string name, id;
+    double gpa;
+};
+struct SV {
+    Student s ;
+    SV *next;
+};
+typedef struct SV *sv;
+
+// cap phat don mot node moi voi du lieu struct
+sv makeNode() {
+    sv tmp = new SV();
+    cout << "Nhap thong tin sinh vien: \n";
+    cout << "Nhap ID:";
+    cin >> tmp->s.id;
+    cout << "Nhap ten: ";
+    cin.ignore();
+    getline(cin, tmp->s.name);
+    cout << "Nhap GPA: ";
+    cin >> tmp->s.gpa;
     tmp->next = NULL;
     return tmp;
 }
 // kiem tra rong
-bool empty(node a) {
+bool empty(sv a) {
     return a == NULL;
 }
 // tinh so phan tu trong list
-int Size(node a) {
+int Size(sv a) {
     int cnt = 0;
     while(a!=NULL) {
         cnt++;
@@ -28,8 +40,8 @@ int Size(node a) {
     return cnt;
 }
 // them 1 phan tu vao dau list 
-void insertFirst(node &a, int x) {
-    node tmp = makeNode(x);
+void insertFirst(sv &a) {
+    sv tmp = makeNode();
     if(a==NULL) {
         a = tmp;
     }
@@ -39,13 +51,13 @@ void insertFirst(node &a, int x) {
     }
 }
 // them 1 phan tu vao cuoi list 
-void insertLast(node &a, int x) {
-    node tmp = makeNode(x);
+void insertLast(sv &a) {
+    sv tmp = makeNode();
     if (a == NULL) {
         a = tmp;
     }
     else {
-        node p = a;
+        sv p = a;
         while (p->next != NULL) {
             p = p->next;
         }
@@ -53,37 +65,37 @@ void insertLast(node &a, int x) {
     }
 }
 // them 1 phan tu vao giua list
-void insertMiddle(node &a, int x, int pos) {
+void insertMiddle(sv &a, int pos) {
     int n = Size(a);
     if (pos < 0 || pos > n+1)
         cout << "Vi tri chen khong hop le" << endl;
     if(n==1) {
-        insertFirst(a,x);
+        insertFirst(a);
         return;
     }
     else if(n==pos+1) {
-        insertLast(a, x);
+        insertLast(a);
         return;
     }
-    node p = a;
+    sv p = a;
     for (int i = 1; i < pos - 1; i++) {
         p = p->next;
     }
-    node tmp = makeNode(x);
+    sv tmp = makeNode();
     tmp->next = p->next;
     p->next = tmp;
 }
 // xoa o dau list
-void deleteFirst(node &a) {
+void deleteFirst(sv &a) {
     if(a==NULL)
         return;
     a = a->next;
 }
 // xoa cuoi list
-void deleteLast(node &a) {
+void deleteLast(sv &a) {
     if(a==NULL)
         return;
-    node truoc = NULL, sau = a;
+    sv truoc = NULL, sau = a;
     while(sau->next!=NULL) {
         truoc = sau;
         sau = sau->next;
@@ -96,10 +108,10 @@ void deleteLast(node &a) {
     }
 }
 // xoa o giua list
-void deleteMiddle(node &a, int pos) {
+void deleteMiddle(sv &a, int pos) {
     if(pos<=0 || pos > Size(a))
         return;
-    node truoc = NULL, sau = a;
+    sv truoc = NULL, sau = a;
     for (int i = 1; i < pos; i++) {
         truoc = sau;
         sau = sau->next;
@@ -112,65 +124,73 @@ void deleteMiddle(node &a, int pos) {
     }
 }
 // in list
-void show(node a) {
+void in(Student s) {
+    cout << "-----------------------" << endl;
+    cout << "ID: " << s.id << endl;
+    cout << "Ten: " << s.name << endl;
+    cout << "GPA: " << s.gpa << endl;
+    cout << "-----------------------" << endl;
+}
+void show(sv a) {
     // cout << "-----------------------" << endl;
     while(a!=NULL) {
-        cout << a->data << " ";
+        // cout << a->s.gpa << endl;
+        in(a->s);
         a = a->next;
     }
     cout << endl;
 }
 // sap xep
-void sorting_l2h(node &a) {
-    for (node p = a; p->next != NULL; p = p->next) {
-        node min = p;
-        for (node q = p->next; q != NULL; q = q->next) {
-            if(q->data < min->data) {
+void sorting_l2h(sv &a) {
+    for (sv p = a; p->next != NULL; p = p->next) {
+        sv min = p;
+        for (sv q = p->next; q != NULL; q = q->next) {
+            if(q->s.gpa < min->s.gpa) {
                 min = q;
             }
         }
-        int tmp = min->data;
-        min->data = p->data;
-        p->data = tmp;
+        Student tmp = min->s;
+        min->s = p->s;
+        p->s = tmp;
     }
 }
-void sorting_h2l(node &a) {
-    for (node p = a; p->next != NULL; p = p->next) {
-        node max = p;
-        for (node q = p->next; q != NULL; q = q->next) {
-            if(q->data > max->data) {
+void sorting_h2l(sv &a) {
+    for (sv p = a; p->next != NULL; p = p->next) {
+        sv max = p;
+        for (sv q = p->next; q != NULL; q = q->next) {
+            if(q->s.gpa > max->s.gpa) {
                 max = q;
             }
         }
-        int tmp = max->data;
-        max->data = p->data;
-        p->data = tmp;
+        Student tmp = max->s;
+        max->s = p->s;
+        p->s = tmp;
     }
 }
 // tim kiem
-void search_max(node &a) {
-    node max = a;
-    node p = a;
+void search_max(sv &a) {
+    sv max = a;
+    sv p = a;
     // insertLast(a, 0);
     do{
         p = p->next;
-        if (p->data > max->data)
+        if (p->s.gpa > max->s.gpa)
             max = p;
     } while(p->next != NULL);
-    cout <<"Gia tri lon nhat: " << max->data << endl;
+    cout <<"Gia tri lon nhat: " << max->s.gpa << endl;
 }
-void search_min(node &a) {
-    node min = a;
-    node p = a;
+void search_min(sv &a) {
+    sv min = a;
+    sv p = a;
     do{
         p = p->next;
-        if (p->data < min->data)
+        if (p->s.gpa < min->s.gpa)
             min = p;
     } while(p->next != NULL);
-    cout <<"Gia tri nho nhat: " << min->data << endl;
+    cout <<"Gia tri nho nhat: " << min->s.gpa << endl;
 }
 int main() {
-    node head = NULL;
+    sv head = NULL;
     while(1){
         cout << "-----------------MENU-------------------\n";
         cout << "1. Chen phan tu vao dau danh sach \n";
@@ -191,25 +211,16 @@ int main() {
         switch (lc)
         {
         case 1:
-            // int x;
-            cout << "Nhap gia tri can chen: ";
-            cin >> x;
-            insertFirst(head, x);
+            insertFirst(head);
             break;
         case 2:
-            // int x;
-            cout << "Nhap gia tri can chen: ";
-            cin >> x;
-            insertLast(head, x);
+            insertLast(head);
             break;
         case 3:
-            // int x;
             int pos;
-            cout << "Nhap gia tri can chen: ";
-            cin >> x;
             cout << "Nhap vi tri can chen: ";
             cin >> pos;
-            insertMiddle(head, x, pos);
+            insertMiddle(head, pos);
             break;
         case 4:
             deleteFirst(head);
@@ -218,7 +229,7 @@ int main() {
             deleteLast(head);
             break;
         case 6:
-            // int x;
+            int x;
             cout << "Nhap vi tri can xoa: ";
             cin >> x;
             deleteMiddle(head, x);
