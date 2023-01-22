@@ -1,10 +1,5 @@
 #include<iostream>
 using namespace std;
-
-struct Student {
-    string name, id;
-    double gpa;
-}
 struct Node {
     int data;
     Node *next;

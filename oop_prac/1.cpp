@@ -14,8 +14,8 @@ class PhanSo {
         ll tu, mau;
     public:
         PhanSo(ll tu, ll mau); //Ham constructor mac dinh khoi tao
-        friend ostream& operator<<(ostream &, PhanSo);
-        friend istream &operator>>(istream &, PhanSo &);
+        friend ostream& operator<<(ostream &, PhanSo); // toan tu chong xuat
+        friend istream &operator>>(istream &, PhanSo &); // toan tu chong nhap
         void rutgon();
 };
 PhanSo::PhanSo(ll tu, ll mau) {
@@ -25,19 +25,18 @@ PhanSo::PhanSo(ll tu, ll mau) {
 ostream& operator <<(ostream& out, PhanSo a) {
         out << a.tu << "/" << a.mau;
         return out;
-}
+} // toan tu chong xuat
 istream& operator >>(istream& in, PhanSo &a) {
         in >> a.tu >> a.mau;
         return in;
-}
+} // toan tu chong nhap
 void PhanSo::rutgon() {
         ll g = gcd(tu, mau);
         tu /= g;
         mau /= g;
 }
-
 int main() {
-        PhanSo p(1, 1);
+        PhanSo p(0, 0);
         cin >> p;
         p.rutgon();
         cout << p;
