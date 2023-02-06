@@ -1,0 +1,20 @@
+vector<int> subarraySum(vector<int>arr, int n, long long s)
+    {
+        // Your code here
+        if(s==0) return {-1};
+        long long tong;
+        tong = 0;
+        int i=0, j=0;
+        while(j<=n) {
+            if(tong == s) return {i+1, j};
+            else if(tong < s) {
+                tong += arr[j];
+                j++;
+            }
+            else if(tong > s) {
+                tong = tong -arr[i];
+                // j = j+1;
+                i++;
+            }
+        }
+        return {-1};
